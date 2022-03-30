@@ -23,8 +23,9 @@
   {% for doing in toDos %}
     <tr>
       <th scope="row">{{ forloop.counter }}</th>
-      <th scope="row">{{ doing.name }}</th>
+      <td> href="{% url 'core:doing_detail' doing.pk%}"{{doing.name}}</td>
       <th scope="row">{{ doing.completed }}</th>
+
     </tr>
   {% empty %}
   <h4> Список дел</h4>
