@@ -1,41 +1,4 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Bootstrap CSS -->
-    <link href="node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet" >
-
-    <title>To Do List</title>
-  </head>
-  <body>
-    <table class="table">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Дело</th>
-      <th scope="col">Выполнено?</th>
-    </tr>
-  </thead>
-  <tbody>
-  {% for doing in toDos %}
-    <tr>
-      <th scope="row">{{ forloop.counter }}</th>
-      <td> href="{% url 'core:doing_detail' doing.pk%}"{{doing.name}}</td>
-      <th scope="row">{{ doing.completed }}</th>
-
-    </tr>
-  {% empty %}
-  <h4> Список дел</h4>
-  {% endfor %}
-
-       </tbody>
-    </table>
-
-
-    <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
-
-  </body>
-</html>
+{% block content %}
+{% include 'core/doing_list.html' %}
+{% include 'core/doing_form.html' %}
+{% endblock %}

@@ -1,8 +1,6 @@
-from django.http import HttpResponse
-from django.shortcuts import render
-from django.urls import reverse
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-
+from django.shortcuts import render, get_object_or_404, redirect
+from django.views.generic import ListView, DetailView
+from .forms import TodoCreateForm, TodoCompletedForm
 import core.forms
 import core.filters
 from core.models import Doing
@@ -20,41 +18,59 @@ class TitleMixin:
         return context
 
 
-class Doings(TitleMixin, ListView):
+class Todo(TitleMixin, ListView):
 
     def get_filters(self):
         return core.filters.DoingFilter(self.request.GET)
 
     def index(request):
-        toDos = Doing.objects.all()
-        return render(request, 'core/index.html', {"toDos": toDos})
+        form = TodoCreateForm()
+        todos = Doing.objects.all()
+        context = {
+            'todos': todos,
+            'form': form
+        }
+        return render(request, 'core/index.html', context)
+
+    def create(request):
+        if request.method == 'POST':
+            form = TodoCreateForm(request.POST)
+            form.save()
+            return redirect('/')
+        else:
+            return redirect('/')
+
+    def update(request, pk):
+        todo = Doing.objects.get(pk=pk)
+        form = TodoCompletedForm(instance=todo)
+
+        if request.method == 'POST':
+            form = TodoCompletedForm(request.POST, instance=todo)
+            form.save()
+        return redirect('/')
 
 
-class DoingUpdate(TitleMixin, UpdateView):
-    model = core.models.Doing
-    form_class = core.forms.ToDoEdit
 
-    def get_title(self):
-        return f'Изменение данных книги "{str(self.get_object())}"'
-
-    def get_success_url(self):
-        return reverse('core:index')
+    def delete(request, pk):
+        todo = Doing.objects.get(pk=pk)
+        todo.delete()
+        return redirect('/')
 
 
-class DoingCreate(TitleMixin, CreateView):
-    model = core.models.Doing
-    form_class = core.forms.ToDoEdit
-    title = 'Добавление книги'
+    def detail(request, pk):
+        todo = Doing.objects.get(pk=pk)
+        form = TodoCompletedForm(todo)
+        context = {
+            'form': form
+        }
+        return render(request, 'core/doing_update.html', context)
 
-    def get_success_url(self):
-        return reverse('core:index')
 
 
-class DoingDelete(TitleMixin, DeleteView):
-    model = core.models.Doing
+def book_detail(request, pk):
+    book = get_object_or_404(core.models.Doing, pk=pk)
+    return render(request, 'core/book_detail.html', {'book': book})
 
-    def get_title(self):
-        return f'Удаление книги {str(self.get_object())}'
 
-    def get_success_url(self):
-        return reverse('core:index')
+
+
