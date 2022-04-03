@@ -1,10 +1,8 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView
 
-
-from core.forms import TodoCompletedForm, TodoCreateForm
-import core.filters
+from core.forms import TodoCreateForm
 from core.models import Doing
 
 
@@ -21,9 +19,6 @@ class TitleMixin:
 
 
 class Todo(TitleMixin, ListView):
-
-    def get_filters(self):
-        return core.filters.DoingFilter(self.request.GET)
 
     def index(request):
         form = TodoCreateForm()
@@ -42,26 +37,10 @@ class Todo(TitleMixin, ListView):
         else:
             return redirect('/')
 
-    def update(request, pk):
-        todo = Doing.objects.get(pk=pk)
-        form = TodoCompletedForm(instance=todo)
-
-        if request.method == 'POST':
-            form = TodoCompletedForm(request.POST, instance=todo)
-            form.save()
-        return redirect('/')
-
     def delete(request, pk):
         todo = Doing.objects.get(pk=pk)
         todo.delete()
         return redirect('/')
-
-
-
-
-def book_detail(request, pk):
-    book = get_object_or_404(core.models.Doing, pk=pk)
-    return render(request, 'core/book_detail.html', {'book': book})
 
 
 class TodoUpdate(UpdateView):

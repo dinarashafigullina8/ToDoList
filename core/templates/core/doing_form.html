@@ -4,8 +4,8 @@
 
 <form class="row g-3 d-flex justify-content-center" method="post" style="margin-top: 10px">{% csrf_token %}
     <div class="col-auto d-flex">
-        {{ form }}
-        <button type="submit" class="btn btn-primary">Сохранить 1</button>
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Сохранить изменения</button>
     </div>
 </form>
 
