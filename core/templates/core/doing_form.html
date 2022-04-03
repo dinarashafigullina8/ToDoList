@@ -2,10 +2,10 @@
 
 {% block content %}
 
-<form class="row g-3 d-flex justify-content-center" method="post" action="doing/create" style="margin-top: 10px">{% csrf_token %}
+<form class="row g-3 d-flex justify-content-center" method="post" style="margin-top: 10px">{% csrf_token %}
     <div class="col-auto d-flex">
-        {{ form.name }}
-        <button type="submit" class="btn btn-primary">Сохранить</button>
+        {{ form }}
+        <button type="submit" class="btn btn-primary">Сохранить 1</button>
     </div>
 </form>
 

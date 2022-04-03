@@ -1,5 +1,4 @@
 from django.forms import ModelForm, TextInput, CheckboxInput
-from core.models import models
 
 import core.models
 

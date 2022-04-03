@@ -1,7 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import ListView, DetailView
-from .forms import TodoCreateForm, TodoCompletedForm
-import core.forms
+from django.urls import reverse_lazy
+from django.views.generic import ListView, UpdateView
+
+
+from core.forms import TodoCompletedForm, TodoCreateForm
 import core.filters
 from core.models import Doing
 
@@ -49,21 +51,11 @@ class Todo(TitleMixin, ListView):
             form.save()
         return redirect('/')
 
-
-
     def delete(request, pk):
         todo = Doing.objects.get(pk=pk)
         todo.delete()
         return redirect('/')
 
-
-    def detail(request, pk):
-        todo = Doing.objects.get(pk=pk)
-        form = TodoCompletedForm(todo)
-        context = {
-            'form': form
-        }
-        return render(request, 'core/doing_update.html', context)
 
 
 
@@ -72,5 +64,7 @@ def book_detail(request, pk):
     return render(request, 'core/book_detail.html', {'book': book})
 
 
-
-
+class TodoUpdate(UpdateView):
+    model = Doing
+    fields = '__all__'
+    success_url = reverse_lazy('core:todos')

@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Doing(models.Model):
-    name = models.CharField('Список дел', max_length=128)
+    name = models.CharField('Название задачи', max_length=128)
     completed = models.BooleanField('Выполнено?', default=False)
 
     class Meta:
