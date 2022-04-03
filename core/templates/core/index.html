@@ -1,4 +1,11 @@
+
 {% block content %}
+{% if request.user.is_authenticated %}
+    <p>{{ request.user }}</p>
+    <a href="{% url 'core:logout' %}">Выйти</a>
+{% else %}
+    <a href="{% url 'core:login' %}">Авторизация</a>
+{% endif %}
 {% include 'core/doing_create_form.html' %}
 {% include 'core/doing_list.html' %}
 {% endblock %}
