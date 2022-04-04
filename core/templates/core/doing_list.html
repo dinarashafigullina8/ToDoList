@@ -1,6 +1,7 @@
 {% extends 'core/base.html' %}
 {% block content %}
   <div class="container d-flex flex-column align-items-center">
+      <h1> Список дел {{color}}</h1>
       <div class="card-list">
           {% for todo in todos %}
               <div class="card" onclick="location.href='{% url 'core:doing_update' todo.pk%}';">
