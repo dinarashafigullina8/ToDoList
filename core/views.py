@@ -30,7 +30,6 @@ class Todo(LoginRequiredMixin, ListView):
     form_class = TodoCreateForm
     context_object_name = 'todos'
 
-
     def create(request):
 
         if request.method == 'POST':
